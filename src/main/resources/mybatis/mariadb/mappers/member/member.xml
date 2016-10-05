@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberDao">
+
+	<select id="list" resultType="member">
+		/* memberDao.list : 회원 목록 조회 */
+        SELECT
+                M.MEMBER_ID
+              , M.MEMBER_NAME
+              , C.CONTENTS_ID
+              , C.CONTENTS_NAME
+        FROM    MEMBER M
+                INNER JOIN  MEMBER_CONTENTS MC
+                ON          MC.MEMBER_ID = M.MEMBER_ID
+                INNER JOIN  CONTENTS C
+                ON          C.CONTENTS_ID = MC.CONTENTS_ID
+	</select>
+
+</mapper>
