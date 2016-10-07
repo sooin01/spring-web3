@@ -13,9 +13,9 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import com.zaxxer.hikari.HikariDataSource;
 
-public class JdbcConfiguration {
+public class JdbcConfig {
 
-	@Bean
+	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
 		HikariDataSource ds = new HikariDataSource();
         ds.setMaximumPoolSize(20);

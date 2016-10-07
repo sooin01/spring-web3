@@ -6,14 +6,18 @@ import javax.servlet.ServletRegistration.Dynamic;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 public class WebInitalizer implements WebApplicationInitializer {
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
+		servletContext.addFilter("characterEncodingFilter", new CharacterEncodingFilter("UTF-8", true))
+				.addMappingForUrlPatterns(null, false, "/*");
+		
 		AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-		ctx.register(WebConfiguration.class);
+		ctx.register(WebConfig.class);
 		ctx.setServletContext(servletContext);
 		
 		Dynamic servlet = servletContext.addServlet("dispatcher", new DispatcherServlet(ctx));

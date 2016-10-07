@@ -1,5 +1,6 @@
 package com.my.web.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -8,6 +9,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
@@ -15,8 +18,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @ComponentScan(basePackages = "com.my.web")
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
-@Import(value = JdbcConfiguration.class)
-public class WebConfiguration extends WebMvcConfigurerAdapter {
+@Import(value = JdbcConfig.class)
+public class WebConfig extends WebMvcConfigurerAdapter {
 
 //	@Bean
 //	public Docket api() {
@@ -40,11 +43,21 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("swagger-ui.html")
-			.addResourceLocations("classpath:/META-INF/resources/");
-	 
-	    registry.addResourceHandler("/webjars/**")
-	    	.addResourceLocations("classpath:/META-INF/resources/webjars/");
+		// springfox
+		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+	    registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+	    
+	    // css, js, image
+	    registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
+	
+	@Bean
+	public InternalResourceViewResolver internalResourceViewResolver() {
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setViewClass(JstlView.class);
+		viewResolver.setPrefix("/WEB-INF/views/");
+		viewResolver.setSuffix(".jsp");
+		return viewResolver;
 	}
 	
 }
