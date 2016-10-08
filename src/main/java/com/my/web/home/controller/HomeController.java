@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,8 +21,13 @@ public class HomeController {
 	@Autowired
 	private HomeService homeService;
 	
-//	@ApiOperation(value = "index")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String root() {
+		return "redirect:/home";
+	}
+	
+//	@ApiOperation(value = "index")
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	@ResponseBody
 	public Map<String, Object> index() {
 		logger.info("Home controller!");
@@ -38,14 +42,9 @@ public class HomeController {
 		return map;
 	}
 	
-	@GetMapping(value = "/home")
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home() {
 		return "home/home";
-	}
-	
-	@GetMapping(value = "login")
-	public String login() {
-		return "home/login";
 	}
 	
 }
