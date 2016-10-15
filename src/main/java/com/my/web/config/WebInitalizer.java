@@ -1,5 +1,8 @@
 package com.my.web.config;
 
+import java.util.EnumSet;
+
+import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -20,7 +23,7 @@ public class WebInitalizer implements WebApplicationInitializer {
 		
 		// 인코딩
 		FilterRegistration.Dynamic filter = servletContext.addFilter("encodingFilter", new CharacterEncodingFilter("UTF-8", true));
-		filter.addMappingForUrlPatterns(null, false, "/*");
+		filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 		
 		// 시큐리티
 //		filter = servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy());

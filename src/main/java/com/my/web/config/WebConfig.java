@@ -1,16 +1,22 @@
 package com.my.web.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 
 @Configuration
 @EnableWebMvc
@@ -20,6 +26,9 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableTransactionManagement
 @Import(value = JdbcConfig.class)
 public class WebConfig extends WebMvcConfigurerAdapter {
+	
+	@Autowired
+	private ApplicationContext applicationContext;
 
 //	@Bean
 //	public Docket api() {
@@ -51,13 +60,66 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	    registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 	
+	/**
+	 * JSP
+	 * 
+	 * @return
+	 */
+//	@Bean
+//	public InternalResourceViewResolver internalResourceViewResolver() {
+//		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+//		viewResolver.setViewClass(JstlView.class);
+//		viewResolver.setPrefix("/WEB-INF/views/");
+//		viewResolver.setSuffix(".jsp");
+//		return viewResolver;
+//	}
+	
+	/**
+	 * Thymeleaf
+	 * 
+	 * @return
+	 */
 	@Bean
-	public InternalResourceViewResolver internalResourceViewResolver() {
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".jsp");
-		return viewResolver;
+	public SpringResourceTemplateResolver templateResolver(){
+	    SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+	    templateResolver.setApplicationContext(this.applicationContext);
+	    templateResolver.setPrefix("/WEB-INF/templates/");
+	    templateResolver.setSuffix(".html");
+	    templateResolver.setTemplateMode(TemplateMode.HTML);
+	    templateResolver.setCacheable(false);
+	    return templateResolver;
+	}
+
+	/**
+	 * Thymeleaf
+	 * 
+	 * @return
+	 */
+	@Bean
+	public SpringTemplateEngine templateEngine(){
+	    SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+	    templateEngine.setTemplateResolver(templateResolver());
+	    templateEngine.setEnableSpringELCompiler(true);
+	    return templateEngine;
+	}
+	
+	/**
+	 * Thymeleaf
+	 * 
+	 * @return
+	 */
+	@Bean
+    public ThymeleafViewResolver viewResolver(){
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setCharacterEncoding("UTF-8");
+        viewResolver.setTemplateEngine(templateEngine());
+        return viewResolver;
+    }
+	
+	@Bean
+	public RestTemplate restTemplate() {
+		OkHttp3ClientHttpRequestFactory requestFactory = new OkHttp3ClientHttpRequestFactory();
+		return new RestTemplate(requestFactory);
 	}
 	
 }
