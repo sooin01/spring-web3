@@ -18,7 +18,7 @@ public class WebInitalizer implements WebApplicationInitializer {
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-		ctx.register(WebMvcConfig.class);
+		ctx.register(WebConfig.class);
 		ctx.setServletContext(servletContext);
 		
 		// 인코딩

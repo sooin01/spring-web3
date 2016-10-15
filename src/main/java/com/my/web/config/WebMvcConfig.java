@@ -25,7 +25,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @Import(value = JdbcConfig.class)
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
+public class WebConfig extends WebMvcConfigurerAdapter {
 	
 	@Autowired
 	private ApplicationContext applicationContext;
