@@ -1,4 +1,4 @@
-package com.my.web.config;
+package com.my.config;
 
 import java.util.EnumSet;
 

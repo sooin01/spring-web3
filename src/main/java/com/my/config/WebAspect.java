@@ -1,4 +1,4 @@
-package com.my.web.config;
+package com.my.config;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class WebAdvice {
+public class WebAspect {
 	
 	private static final Logger logger = LogManager.getLogger();
 	

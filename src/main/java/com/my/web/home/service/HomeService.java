@@ -20,7 +20,7 @@ public class HomeService {
 	private CommonDao commonDao;
 
 	@Transactional(readOnly = true)
-	public List<MemberVo> index() {
+	public List<MemberVo> list() {
 		List<MemberVo> memberList = commonDao.selectList("memberDao.list");
 		
 		for (MemberVo memberVo : memberList) {

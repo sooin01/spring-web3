@@ -1,28 +1,42 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/resources/pkg/bootstrap-3.3.2-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/resources/pkg/bootstrap-3.3.2-dist/css/bootstrap-theme.min.css">
 </head>
 <body>
 
-<h2>Thymeleaf</h2>
+	<div class="container">
+		<h2 th:text="'Hello ' + ${name} + '!'"></h2>
+		
+		<table border="1">
+			<thead>
+				<tr>
+					<th>값</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="data : ${list}">
+					<td th:text="${data}"></td>
+				</tr>
+			</tbody>
+		</table>
 
-<div>
-	<h2 th:text="'Hello ' + ${name} + '!'"></h2>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-8">.col-xs-12 .col-sm-6 .col-md-8</div>
+			<div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
+			<div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
+			<div class="clearfix visible-xs-block"></div>
+			<div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
+		</div>
+	</div>
+
+	<script src="/resources/pkg/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+	<script src="/resources/js/jquery/jquery-3.1.1.min.js"></script>
 	
-	<table border="1">
-		<thead>
-			<tr>
-				<th>값</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="data : ${list}">
-				<td th:text="${data}"></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-
 </body>
 </html>

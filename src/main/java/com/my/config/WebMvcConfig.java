@@ -1,4 +1,4 @@
-package com.my.web.config;
+package com.my.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -11,12 +11,15 @@ import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+
+import com.my.web.common.interceptor.LoggingWebInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -120,6 +123,16 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	public RestTemplate restTemplate() {
 		OkHttp3ClientHttpRequestFactory requestFactory = new OkHttp3ClientHttpRequestFactory();
 		return new RestTemplate(requestFactory);
+	}
+	
+	@Bean
+	public LoggingWebInterceptor loggingWebInterceptor() {
+		return new LoggingWebInterceptor();
+	}
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(loggingWebInterceptor());
 	}
 	
 }
