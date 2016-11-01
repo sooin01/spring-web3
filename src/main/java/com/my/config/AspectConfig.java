@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class WebAspect {
+public class AspectConfig {
 	
 	private static final Logger logger = LogManager.getLogger();
 	
