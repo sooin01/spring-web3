@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/WEB-INF/templates/file/upload.html=UTF-8
 encoding//src/main/webapp/WEB-INF/templates/home/home.html=UTF-8
 encoding//src/main/webapp/WEB-INF/views/home/home.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/login/login.jsp=UTF-8
