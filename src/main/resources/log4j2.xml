@@ -8,7 +8,9 @@
 	</Appenders>
 	
 	<Loggers>
-		<Logger name="com.my.web" level="debug" />
+		<Logger name="com.my.app.api" level="debug" />
+		
+		<Logger name="com.my.app.web" level="debug" />
 		
 		<Logger name="org.springframework" level="info" />
 		

@@ -26,7 +26,7 @@ import com.my.app.web.common.interceptor.LoggingWebInterceptor;
 @Configuration
 @EnableWebMvc
 //@EnableSwagger2
-@ComponentScan(basePackages = "com.my.web")
+@ComponentScan(basePackages = {"com.my.app.api", "com.my.app.web"})
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @Import(value = JdbcConfig.class)
@@ -140,7 +140,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public MultipartResolver multipartResolver() {
 	    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-	    multipartResolver.setMaxUploadSize(1024 * 1024 * 1024);
+	    multipartResolver.setMaxUploadSize(1024 * 1024 * 1024); // 1GB
 	    multipartResolver.setDefaultEncoding("utf-8");
 	    return multipartResolver;
 	}

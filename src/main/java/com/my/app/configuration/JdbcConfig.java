@@ -44,7 +44,7 @@ public class JdbcConfig {
 		sqlSessionFactoryBean.setDataSource(dataSource());
 		sqlSessionFactoryBean.setMapperLocations(resources);
 		sqlSessionFactoryBean.setConfiguration(configuration);
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.my.web");
+		sqlSessionFactoryBean.setTypeAliasesPackage("com.my.app.web");
 		return sqlSessionFactoryBean.getObject();
 	}
 	
