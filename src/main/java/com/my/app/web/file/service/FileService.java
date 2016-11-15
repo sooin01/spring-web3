@@ -23,9 +23,10 @@ public class FileService {
 		
 		Path path = Paths.get("C:/Users/sooin/Desktop/test.avi");
 		path.toFile().delete();
+		
 		try (BufferedInputStream bis = new BufferedInputStream(fileDto.getFile().getInputStream());
 				FileOutputStream fos = new FileOutputStream(path.toFile())) {
-			byte[] b = new byte[4096];
+			byte[] b = new byte[2048];
 			
 			int read = -1;
 			while ((read = bis.read(b)) != -1) {
