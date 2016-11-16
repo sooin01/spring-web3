@@ -9,6 +9,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -137,12 +139,16 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(loggingWebInterceptor());
 	}
 	
-	@Bean
+//	@Bean
 	public MultipartResolver multipartResolver() {
 	    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-	    multipartResolver.setMaxUploadSize(1024 * 1024 * 1024); // 1GB
-	    multipartResolver.setDefaultEncoding("utf-8");
+	    multipartResolver.setResolveLazily(true);
 	    return multipartResolver;
+	}
+	
+	@Bean
+	public Validator validator() {
+		return new LocalValidatorFactoryBean();
 	}
 	
 }
