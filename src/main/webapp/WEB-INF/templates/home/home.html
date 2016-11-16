@@ -33,10 +33,27 @@
 			<div class="clearfix visible-xs-block"></div>
 			<div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
 		</div>
+		
+		<p>
+			<button type="button" onclick="goUpdate(); return false;" class="btn btn-sm btn-default">업데이트</button>
+		</p>
+		<p id="result">
+		</p>
 	</div>
 
-	<script src="/resources/pkg/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
 	<script src="/resources/js/jquery/jquery-3.1.1.min.js"></script>
-	
+	<script src="/resources/pkg/bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		function goUpdate() {
+			$.post("/home/update", { id: "123123" })
+			.done(function(data) {
+				$("#result").text(data.message);
+			})
+			.fail(function() {
+				$("#result").text("Fail.");
+			})
+			
+		}
+	</script>
 </body>
 </html>
