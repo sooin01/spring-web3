@@ -18,6 +18,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -72,14 +74,16 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	 * 
 	 * @return
 	 */
-//	@Bean
-//	public InternalResourceViewResolver internalResourceViewResolver() {
-//		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-//		viewResolver.setViewClass(JstlView.class);
-//		viewResolver.setPrefix("/WEB-INF/views/");
-//		viewResolver.setSuffix(".jsp");
-//		return viewResolver;
-//	}
+	@Bean
+	public InternalResourceViewResolver internalResourceViewResolver() {
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setViewClass(JstlView.class);
+		viewResolver.setPrefix("/WEB-INF/views/");
+		viewResolver.setSuffix(".jsp");
+		viewResolver.setOrder(0);
+		viewResolver.setCache(false);
+		return viewResolver;
+	}
 	
 	/**
 	 * Thymeleaf
@@ -94,6 +98,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	    templateResolver.setSuffix(".html");
 	    templateResolver.setTemplateMode(TemplateMode.HTML);
 	    templateResolver.setCacheable(false);
+	    templateResolver.setOrder(1);
 	    return templateResolver;
 	}
 

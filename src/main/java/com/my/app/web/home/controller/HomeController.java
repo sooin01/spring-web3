@@ -1,11 +1,13 @@
 package com.my.app.web.home.controller;
 
+import java.lang.reflect.Field;
+
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,6 @@ import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.google.common.collect.ImmutableList;
 import com.my.app.web.home.dto.HomeReq;
@@ -34,9 +35,8 @@ public class HomeController {
 	private Validator validator;
 	
 	@GetMapping(value = "/")
-	@ResponseStatus(value = HttpStatus.OK)
-	public void index() {
-		
+	public String index() {
+		return "home/home";
 	}
 	
 	@GetMapping(value = "/home")
@@ -44,8 +44,10 @@ public class HomeController {
 		// @Valid 사용안할 시
 //		validator.validate(homeReq, bindingResult);
 		if (bindingResult.hasErrors()) {
-			FieldError fieldError = bindingResult.getFieldError();
-			log.info("[{}] {}", fieldError.getField(), fieldError.getDefaultMessage());
+			for (Field field : homeReq.getClass().getDeclaredFields()) {
+				FieldError fieldError = bindingResult.getFieldError(field.getName());
+				log.info("[{}] {}", fieldError.getField(), fieldError.getDefaultMessage());
+			}
 		}
 		
 		model.addAttribute("list", ImmutableList.of("aaa", "bbb"));
@@ -54,13 +56,13 @@ public class HomeController {
 		return "home/home";
 	}
 	
-	@PostMapping(value = "/home/update")
+	@PostMapping(value = "/home/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<ResultDto> homeUpdate(@RequestParam("id") String id) {
 		log.debug("id: {}", id);
 		
 		ResultDto resultDto = new ResultDto();
 		resultDto.setCode("0");
-		resultDto.setMessage("Success.");
+		resultDto.setMessage("Success");
 		return ResponseEntity.ok(resultDto);
 	}
 	

@@ -1,15 +1,15 @@
 package com.my.app.web.login.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class LoginController {
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@PostMapping(value = "/login")
 	public String login() {
-		return "login/login";
+		return "redirect:/home";
 	}
+	
 	
 }

@@ -5,9 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,27 +38,23 @@ public class FileController {
 	}
 	
 	@PostMapping(value = "/upload")
-	public String upload(HttpServletRequest request) {
-		ServletInputStream sis = null;
-		FileOutputStream fos = null;
+	public ResponseEntity<Void> upload(ServletInputStream sis) {
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss.SSS");
+		
 		try {
-			fos = new FileOutputStream("C:/Users/sooin/Desktop/test.pdf");
-			
-			sis = request.getInputStream();
-			byte[] b = new byte[256];
+			byte[] b = new byte[8 * 1024];
 			int read = -1;
 			while ((read = sis.read(b)) != -1) {
-				fos.write(b, 0, read);
-				System.out.println("read: " + read);
+				System.out.println(format.format(new Date()) + " read: " + read);
+//				Thread.sleep(5);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			try { fos.close(); } catch (IOException e) { }
 			try { sis.close(); } catch (IOException e) { }
 		}
 		
-		return "file/upload";
+		return ResponseEntity.ok().build();
 	}
 	
 //	@PostMapping(value = "/upload")
