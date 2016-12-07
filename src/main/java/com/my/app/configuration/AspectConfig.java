@@ -5,21 +5,32 @@ import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Component
+import com.my.app.web.common.model.Logging;
+import com.my.app.web.common.service.LoggingCheck;
+
 @Aspect
 public class AspectConfig {
 	
-	private static final Logger logger = LogManager.getLogger();
+	private static final Logger log = LogManager.getLogger();
 	
-	@Around("execution(* com.my.web..*Service.*(..))")
+	@Autowired
+	private Logging logging;
+	
+	@Around("execution(* com.my.app..*Service.*(..))")
 	public void serviceAround(ProceedingJoinPoint joinPoint) throws Throwable {
-		logger.info("AOP serviceAround before!");
+		log.info("AOP serviceAround before!");
+		
+		log.debug("Before: {}, {}", logging.getId(), logging.getName());
 		
 		joinPoint.proceed();
 		
-		logger.info("AOP serviceAround after!");
+		log.debug("After: {}, {}", logging.getId(), logging.getName());
+		LoggingCheck loggingCheck = new LoggingCheck();
+		loggingCheck.check(logging);
+		
+		log.info("AOP serviceAround after!");
 	}
 	
 }

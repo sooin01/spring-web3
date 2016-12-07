@@ -1,10 +1,7 @@
 package com.my.app.web.file.controller;
 
 import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,13 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StopWatch;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -90,15 +87,15 @@ public class FileController {
 //			log.error("{}, {}", fieldError.getField(), fieldError.getDefaultMessage());
 //		}
 		
-		ProgressListener progressListener = new ProgressListener() {
-			@Override
-			public void update(long pBytesRead, long pContentLength, int pItems) {
-				log.debug(">>> {}, {}, {}", pBytesRead, pContentLength, pItems);
-			}
-		};
+//		ProgressListener progressListener = new ProgressListener() {
+//			@Override
+//			public void update(long pBytesRead, long pContentLength, int pItems) {
+//				log.debug(">>> {}, {}, {}", pBytesRead, pContentLength, pItems);
+//			}
+//		};
 		
 		ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
-		upload.setProgressListener(progressListener);
+//		upload.setProgressListener(progressListener);
 		FileItemIterator iter = upload.getItemIterator(request);
 		while (iter.hasNext()) {
 			FileItemStream fileItem = iter.next();
@@ -108,22 +105,22 @@ public class FileController {
 			} else {
 				log.debug("name: {}, name: {}", fileItem.getFieldName(), fileItem.getName());
 				
-				Path path = Paths.get("C:/Users/sooin/Desktop/" + fileItem.getName());
-				
-				try (BufferedInputStream bis = new BufferedInputStream(fileItem.openStream());
-						FileOutputStream fos = new FileOutputStream(path.toFile())) {
+				StopWatch stopWatch = new StopWatch();
+				stopWatch.start();
+				int total = 0;
+				try (BufferedInputStream bis = new BufferedInputStream(fileItem.openStream())) {
 					byte[] b = new byte[100 * 1024];
 					int read = -1;
 					while ((read = bis.read(b)) != -1) {
-						fos.write(b, 0, read);
-						fos.flush();
+						total += read;
 					}
 				} catch (Exception e) {
 					log.error("file upload exception!", e);
 				}
 				
-				log.debug("file size: {}", path.toFile().length());
-				path.toFile().delete();
+				stopWatch.stop();
+				log.debug("total read size: {}", total);
+				log.debug("걸린시간: {}", stopWatch.toString());
 			}
 		}
 		
