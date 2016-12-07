@@ -8,7 +8,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.my.app.web.common.model.Logging;
-import com.my.app.web.common.service.LoggingCheck;
 
 @Aspect
 public class AspectConfig {
@@ -27,8 +26,6 @@ public class AspectConfig {
 		joinPoint.proceed();
 		
 		log.debug("After: {}, {}", logging.getId(), logging.getName());
-		LoggingCheck loggingCheck = new LoggingCheck();
-		loggingCheck.check(logging);
 		
 		log.info("AOP serviceAround after!");
 	}
