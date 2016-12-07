@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.my.app.web.common.dao.CommonDao;
-import com.my.app.web.common.model.Logging;
 import com.my.app.web.home.vo.MemberVo;
 
 @Service
@@ -20,18 +19,9 @@ public class HomeService {
 	@Autowired
 	private CommonDao commonDao;
 	
-	@Autowired
-	private Logging logging;
-	
 	@Transactional(readOnly = true)
 	public List<MemberVo> list() {
-		List<MemberVo> memberList = commonDao.selectList("memberDao.list");
-		
-		logging.setId("123");
-		logging.setName("test123");
-		log.debug("Service: {}, {}", logging.getId(), logging.getName());
-		
-		return memberList;
+		return commonDao.selectList("memberDao.list");
 	}
 	
 }

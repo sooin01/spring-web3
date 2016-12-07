@@ -7,16 +7,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -29,7 +24,6 @@ import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
 import com.my.app.web.common.interceptor.LoggingWebInterceptor;
-import com.my.app.web.common.model.Logging;
 
 @Configuration
 @EnableWebMvc
@@ -149,11 +143,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	}
 	
 //	@Bean
-	public MultipartResolver multipartResolver() {
-	    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-	    multipartResolver.setResolveLazily(true);
-	    return multipartResolver;
-	}
+//	public MultipartResolver multipartResolver() {
+//	    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+//	    multipartResolver.setResolveLazily(true);
+//	    return multipartResolver;
+//	}
 	
 	@Bean
 	public Validator validator() {
@@ -163,12 +157,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public AspectConfig aspectConfig() {
 		return new AspectConfig();
-	}
-	
-	@Bean
-	@Scope(scopeName = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-	public Logging logging() {
-		return new Logging();
 	}
 	
 }
