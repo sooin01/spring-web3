@@ -15,7 +15,7 @@ public class ApiController {
 	
 	private static final Logger log = LogManager.getLogger();
 
-//	@ApiOperation(value = "index")
+//	@ApiOperation(value = "/index")
 	@GetMapping(value = "/index")
 	public Map<String, Object> index() {
 		log.info("Home controller!");
