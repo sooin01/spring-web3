@@ -1,7 +1,6 @@
 package com.my.app.web.file.service;
 
 import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -24,13 +23,11 @@ public class FileService {
 		Path path = Paths.get("C:/Users/sooin/Desktop/test.avi");
 		path.toFile().delete();
 		
-		try (BufferedInputStream bis = new BufferedInputStream(fileDto.getFile().getInputStream());
-				FileOutputStream fos = new FileOutputStream(path.toFile())) {
+		try (BufferedInputStream bis = new BufferedInputStream(fileDto.getFile().getInputStream())) {
 			byte[] b = new byte[2048];
 			
 			int read = -1;
 			while ((read = bis.read(b)) != -1) {
-				fos.write(b, 0, read);
 				log.debug("Read: {}", read);
 			}
 		} catch (Exception e) {

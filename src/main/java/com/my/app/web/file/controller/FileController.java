@@ -1,22 +1,25 @@
 package com.my.app.web.file.controller;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.InputStream;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
+import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StopWatch;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,60 +45,41 @@ public class FileController {
 	}
 	
 //	@PostMapping(value = "/upload")
-	public ResponseEntity<Void> upload(ServletInputStream sis) {
-		SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss.SSS");
+	public ResponseEntity<Void> upload(@Valid FileDto fileDto, BindingResult bindingResult) {
+		// 유효성 체크1
+		bindingResult = new BeanPropertyBindingResult(fileDto, "fileDto");
+		validator.validate(fileDto, bindingResult);
 		
-		try {
-			byte[] b = new byte[8 * 1024];
-			int read = -1;
-			while ((read = sis.read(b)) != -1) {
-				System.out.println(format.format(new Date()) + " read: " + read);
-//				Thread.sleep(5);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try { sis.close(); } catch (IOException e) { }
+		// 유효성 체크2
+		DataBinder binder = new DataBinder(fileDto);
+		binder.setValidator(validator);
+		binder.validate();
+		bindingResult = binder.getBindingResult();
+		
+		if (bindingResult.hasErrors()) {
+			FieldError fieldError = bindingResult.getFieldError();
+			log.error("{}, {}", fieldError.getField(), fieldError.getDefaultMessage());
 		}
 		
-		return ResponseEntity.ok().build();
-	}
-	
-//	@PostMapping(value = "/upload")
-	public ResponseEntity<Void> upload(FileDto fileDto) {
-//		fileService.file(fileDto);
+		fileService.file(fileDto);
 		return ResponseEntity.ok().build();
 	}
 	
 	@PostMapping(value = "/upload")
 	public ResponseEntity<Void> upload(HttpServletRequest request) throws Exception {
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		
 		boolean multipart = ServletFileUpload.isMultipartContent(request);
 		log.debug("multipart: {}", multipart);
 		
-		FileDto fileDto = new FileDto();
-		
-//		BindingResult bindingResult = new BeanPropertyBindingResult(fileDto, "fileDto");
-//		validator.validate(fileDto, bindingResult);
-		
-//		DataBinder binder = new DataBinder(fileDto);
-//		binder.setValidator(validator);
-//		binder.validate();
-//		BindingResult bindingResult = binder.getBindingResult();
-		
-//		if (bindingResult.hasErrors()) {
-//			FieldError fieldError = bindingResult.getFieldError();
-//			log.error("{}, {}", fieldError.getField(), fieldError.getDefaultMessage());
-//		}
-		
-//		ProgressListener progressListener = new ProgressListener() {
-//			@Override
-//			public void update(long pBytesRead, long pContentLength, int pItems) {
-//				log.debug(">>> {}, {}, {}", pBytesRead, pContentLength, pItems);
-//			}
-//		};
-		
 		ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
-//		upload.setProgressListener(progressListener);
+		upload.setProgressListener(new ProgressListener() {
+			@Override
+			public void update(long pBytesRead, long pContentLength, int pItems) {
+				
+			}
+		});
 		FileItemIterator iter = upload.getItemIterator(request);
 		while (iter.hasNext()) {
 			FileItemStream fileItem = iter.next();
@@ -105,24 +89,36 @@ public class FileController {
 			} else {
 				log.debug("name: {}, name: {}", fileItem.getFieldName(), fileItem.getName());
 				
-				StopWatch stopWatch = new StopWatch();
-				stopWatch.start();
+				InputStream is = fileItem.openStream();
+				log.debug("File available: {}", is.available());
+				
 				int total = 0;
-				try (BufferedInputStream bis = new BufferedInputStream(fileItem.openStream())) {
-					byte[] b = new byte[100 * 1024];
+				try (BufferedInputStream bis = new BufferedInputStream(is)) {
+					byte[] b = new byte[8 * 1024];
 					int read = -1;
-					while ((read = bis.read(b)) != -1) {
+					
+					do {
+						if ((read = bis.read(b)) == -1) {
+							break;
+						}
+						
 						total += read;
-					}
+					} while (true);
+					
 				} catch (Exception e) {
-					log.error("file upload exception!", e);
+					log.error("file upload exception.", e);
 				}
 				
-				stopWatch.stop();
+				if (total == 0) {
+					
+				}
+				
 				log.debug("total read size: {}", total);
-				log.debug("걸린시간: {}", stopWatch.toString());
 			}
 		}
+		
+		stopWatch.stop();
+		log.debug("걸린시간: {}", stopWatch.toString());
 		
 		return ResponseEntity.ok().build();
 	}

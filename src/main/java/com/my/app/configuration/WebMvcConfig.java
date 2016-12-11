@@ -113,7 +113,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		return new LoggingWebInterceptor();
 	}
 	
-	@Bean
+//	@Bean
 	public MultipartResolver multipartResolver() {
 	    return new CommonsMultipartResolver();
 	}
