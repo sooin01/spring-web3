@@ -5,12 +5,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -28,10 +26,12 @@ import com.my.app.web.common.interceptor.LoggingWebInterceptor;
 
 @Configuration
 @EnableWebMvc
-@EnableAspectJAutoProxy
-@ComponentScan(basePackages = {"com.my.app.api", "com.my.app.web"})
-@Import(value = { JdbcConfig.class, CacheConfig.class })
-public class WebMvcConfig extends WebMvcConfigurerAdapter {
+@ComponentScan(
+	basePackages = { "com.my.app.api", "com.my.app.web" },
+	includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class),
+	useDefaultFilters = false
+)
+public class ServletContextConfig extends WebMvcConfigurerAdapter {
 	
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -103,12 +103,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     }
 	
 	@Bean
-	public RestTemplate restTemplate() {
-		OkHttp3ClientHttpRequestFactory requestFactory = new OkHttp3ClientHttpRequestFactory();
-		return new RestTemplate(requestFactory);
-	}
-	
-	@Bean
 	public LoggingWebInterceptor loggingWebInterceptor() {
 		return new LoggingWebInterceptor();
 	}
@@ -121,11 +115,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public Validator validator() {
 		return new LocalValidatorFactoryBean();
-	}
-	
-	@Bean
-	public AspectConfig aspectConfig() {
-		return new AspectConfig();
 	}
 	
 }

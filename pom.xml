@@ -16,7 +16,7 @@
 	</properties>
 	
 	<dependencies>
-		<!-- Spring -->
+		<!-- Spring Framework -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -37,7 +37,13 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
 		
+		<!-- Spring Framework Security -->		
 	    <dependency>
 	        <groupId>org.springframework.security</groupId>
 	        <artifactId>spring-security-web</artifactId>
@@ -225,6 +231,30 @@
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 			<version>2.10.3</version>
+		</dependency>
+		
+		<!-- Atomikos -->
+		<dependency>
+		    <groupId>com.atomikos</groupId>
+		    <artifactId>transactions-jta</artifactId>
+		    <version>3.9.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.atomikos</groupId>
+		    <artifactId>transactions-jdbc</artifactId>
+		    <version>3.9.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>javax.transaction</groupId>
+		    <artifactId>jta</artifactId>
+		    <version>1.1</version>
+		</dependency>
+		
+		<!-- Oracle -->
+		<dependency>
+		    <groupId>com.oracle</groupId>
+		    <artifactId>ojdbc7</artifactId>
+		    <version>12.1.0.2.0</version>
 		</dependency>
 	</dependencies>
 	

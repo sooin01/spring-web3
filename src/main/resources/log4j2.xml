@@ -35,7 +35,7 @@
 		<Logger name="jdbc.resultsettable" level="info" />
 		<Logger name="jdbc.connection" level="off" />
 		
-		<Root level="info">
+		<Root level="debug">
 			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>

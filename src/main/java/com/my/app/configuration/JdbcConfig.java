@@ -52,8 +52,7 @@ public class JdbcConfig {
 	
 	@Bean
 	public SqlSessionTemplate sqlSessionTemplate() throws Exception {
-		SqlSessionTemplate sqlSessionTemplate = new SqlSessionTemplate(sqlSessionFactory());
-		return sqlSessionTemplate;
+		return new SqlSessionTemplate(sqlSessionFactory());
 	}
 	
 }
