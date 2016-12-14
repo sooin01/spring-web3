@@ -9,7 +9,6 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Lazy;
@@ -24,7 +23,7 @@ import com.atomikos.icatch.jta.UserTransactionImp;
 import com.atomikos.icatch.jta.UserTransactionManager;
 import com.atomikos.jdbc.AtomikosDataSourceBean;
 
-@EnableTransactionManagement(mode = AdviceMode.ASPECTJ, proxyTargetClass = true)
+@EnableTransactionManagement(proxyTargetClass = true)
 public class XaJdbcConfig {
 
 	@Bean(initMethod = "init", destroyMethod = "shutdownForce")
@@ -48,11 +47,11 @@ public class XaJdbcConfig {
 	@DependsOn(value = "userTransactionService")
 	public UserTransaction atomikosUserTransaction() throws Exception {
 		UserTransactionImp userTransactionImp = new UserTransactionImp();
-		userTransactionImp.setTransactionTimeout(3000);
+		userTransactionImp.setTransactionTimeout(300);
 		return userTransactionImp;
 	}
 	
-	@Bean
+	@Bean(name = "transactionManager")
 	@DependsOn(value = "userTransactionService")
 	public JtaTransactionManager transactionManager() throws Exception {
 		JtaTransactionManager jtaTransactionManager = new JtaTransactionManager();

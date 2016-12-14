@@ -24,6 +24,8 @@
 		
 		<Logger name="com.zaxxer.hikari" level="info" />
 		
+		<Logger name="com.atomikos" level="trace" />
+		
 		<logger name="log4jdbc.log4j2" level="error" additivity="false">
 			<appender-ref ref="Console" />
 		</logger>
@@ -35,7 +37,7 @@
 		<Logger name="jdbc.resultsettable" level="info" />
 		<Logger name="jdbc.connection" level="off" />
 		
-		<Root level="debug">
+		<Root level="info">
 			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>
