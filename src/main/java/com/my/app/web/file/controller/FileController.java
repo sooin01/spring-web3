@@ -1,7 +1,13 @@
 package com.my.app.web.file.controller;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -12,6 +18,7 @@ import org.apache.commons.fileupload.ProgressListener;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +32,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.my.app.web.file.dto.FileDto;
+import com.my.app.web.file.dto.FileResultDto;
 import com.my.app.web.file.service.FileService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +74,7 @@ public class FileController {
 	}
 	
 	@PostMapping(value = "/upload")
-	public ResponseEntity<Void> upload(HttpServletRequest request) throws Exception {
+	public ResponseEntity<FileResultDto> upload(HttpServletRequest request) throws Exception {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		
@@ -80,47 +88,56 @@ public class FileController {
 				
 			}
 		});
+		
+		InputStream inputStream = null;
+		String filename =  null;
+		
 		FileItemIterator iter = upload.getItemIterator(request);
 		while (iter.hasNext()) {
 			FileItemStream fileItem = iter.next();
 			
 			if (fileItem.isFormField()) {
-				log.debug("name: {}, value: {}", fileItem.getFieldName(), Streams.asString(fileItem.openStream()));
+				filename = Streams.asString(fileItem.openStream());
+				log.debug("name: {}, value: {}", fileItem.getFieldName(), filename);
 			} else {
 				log.debug("name: {}, name: {}", fileItem.getFieldName(), fileItem.getName());
-				
-				InputStream is = fileItem.openStream();
-				log.debug("File available: {}", is.available());
-				
-				int total = 0;
-				try (BufferedInputStream bis = new BufferedInputStream(is)) {
-					byte[] b = new byte[8 * 1024];
-					int read = -1;
-					
-					do {
-						if ((read = bis.read(b)) == -1) {
-							break;
-						}
-						
-						total += read;
-					} while (true);
-					
-				} catch (Exception e) {
-					log.error("file upload exception.", e);
-				}
-				
-				if (total == 0) {
-					
-				}
-				
-				log.debug("total read size: {}", total);
+				inputStream = fileItem.openStream();
+				break;
 			}
+		}
+		
+		String newFilename = UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(filename);
+		Path path = Paths.get("C:/Users/sooin/Desktop/upload/" + newFilename);
+		Files.deleteIfExists(path);
+		Files.createFile(path);
+		
+		long totalRead = 0;
+		try (BufferedInputStream bis = new BufferedInputStream(inputStream);
+				OutputStream os = Files.newOutputStream(path)) {
+			int read = -1;
+			int count = 1;
+			byte[] b = new byte[4];
+			
+			while ((read = bis.read(b)) != -1) {
+				os.write(b, 0, read);
+				os.flush();
+				totalRead += read;
+				
+				if (totalRead / (count * 10 * 1024 * 1024) > 0) {
+					log.debug("{}0MB over. TotalRead: {}", count, totalRead);
+					count++;
+				}
+			}
+		} catch (IOException e) {
+			log.error("Failed upload.", e);
 		}
 		
 		stopWatch.stop();
 		log.debug("걸린시간: {}", stopWatch.toString());
 		
-		return ResponseEntity.ok().build();
+		Files.deleteIfExists(path);
+		
+		return ResponseEntity.ok().body(FileResultDto.builder().fileName(newFilename).fileSize(totalRead).build());
 	}
 	
 }
