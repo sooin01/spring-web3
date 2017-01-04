@@ -4,12 +4,11 @@
          updateCheck="true"
          monitoring="autodetect"
          dynamicConfig="true">
-         
+
     <diskStore path="java.io.tmpdir" />
 
     <cache name="commons"
            maxEntriesLocalHeap="10000"
-           maxEntriesLocalDisk="1000"
            eternal="false"
            diskSpoolBufferSizeMB="20"
            timeToIdleSeconds="300"
