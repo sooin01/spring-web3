@@ -106,7 +106,7 @@ public class CryptoUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String encryptAES(String value) {
+	public static String encryptHexAes(String value) {
 		if (StringUtils.isBlank(value)) {
 			return value;
 		}
@@ -132,7 +132,7 @@ public class CryptoUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String decryptAES(String value) {
+	public static String decryptHexAes(String value) {
 		if (StringUtils.isBlank(value)) {
 			return value;
 		}

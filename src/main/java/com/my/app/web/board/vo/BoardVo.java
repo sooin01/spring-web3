@@ -17,6 +17,7 @@ public class BoardVo {
 
 	public void setId(String id) {
 		this.id = CryptoUtils.decryptUtf8Aes(id);
+//		this.id = CryptoUtils.decryptHexAes(id);
 	}
 
 	public String getName() {
@@ -25,6 +26,7 @@ public class BoardVo {
 
 	public void setName(String name) {
 		this.name = CryptoUtils.decryptUtf8Aes(name);
+//		this.name = CryptoUtils.decryptHexAes(name);
 	}
 
 }
