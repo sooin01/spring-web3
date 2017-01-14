@@ -7,8 +7,13 @@
 <script type="text/javascript" src="/resources/js/crypto-js/aes.js"></script>
 <script type="text/javascript">
 	function encrypt(val) {
+		// UTF-8
 		var key = CryptoJS.enc.Utf8.parse('12345678abcdefgh');
 		var iv = CryptoJS.enc.Utf8.parse('cCEml6750sYhtuBo');
+		/* HEX
+		var key = CryptoJS.enc.Hex.parse('000102030405060708090a0b0c0d0e0f');
+		var iv = CryptoJS.enc.Hex.parse('101112131415161718191a1b1c1d1e1f');
+		*/
 		return CryptoJS.AES.encrypt(val, key, { iv: iv });
 	}
 
