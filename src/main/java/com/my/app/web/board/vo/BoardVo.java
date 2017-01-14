@@ -1,11 +1,11 @@
-package com.my.app.web.notice.controller.vo;
+package com.my.app.web.board.vo;
 
 import com.my.app.web.common.util.CryptoUtils;
 
 import lombok.Data;
 
 @Data
-public class NoticeVo {
+public class BoardVo {
 
 	private String id;
 

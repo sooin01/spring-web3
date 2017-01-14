@@ -19,13 +19,13 @@
 	}
 
 	function go2() {
-		location.href = "/notice/index?id=" + encodeURIComponent(encrypt("test1")) + "&name=" + encodeURIComponent(encrypt("213987123"));
+		location.href = "/board/index?id=" + encodeURIComponent(encrypt("test1")) + "&name=" + encodeURIComponent(encrypt("213987123"));
 	}
 </script>
 </head>
 <body>
 
-<form action="/notice/index" method="post" onsubmit="return go1();">
+<form action="/board/index" method="post" onsubmit="return go1();">
 	<input type="text" name="id">
 	<input type="text" name="name">
 	<input type="submit" value="전송">
