@@ -5,13 +5,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.my.app.web.notice.controller.vo.NoticeVo;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping(value = "/notice")
 public class NoticeController {
 
 	@RequestMapping(value = "/index")
 	public String index(NoticeVo noticeVo) {
-		System.out.println(noticeVo);
+		log.debug(noticeVo.toString());
 		return "notice/notice";
 	}
 

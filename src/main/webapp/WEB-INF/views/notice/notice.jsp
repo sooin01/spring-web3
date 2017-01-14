@@ -7,14 +7,14 @@
 <script type="text/javascript" src="/resources/js/crypto-js/aes.js"></script>
 <script type="text/javascript">
 	function encrypt(val) {
-		var key = CryptoJS.enc.Utf8.parse('cCEml6750sYhtuBo');
-		var iv = CryptoJS.enc.Utf8.parse('12345678abcdefgh');
+		var key = CryptoJS.enc.Utf8.parse('12345678abcdefgh');
+		var iv = CryptoJS.enc.Utf8.parse('cCEml6750sYhtuBo');
 		return CryptoJS.AES.encrypt(val, key, { iv: iv });
 	}
 
 	function go1() {
 		$("input[name=id]").val(encrypt("test1"));
-		$("input[name=name]").val(encrypt("test2"));
+		$("input[name=name]").val(encrypt("213987123"));
 		return true;
 	}
 
