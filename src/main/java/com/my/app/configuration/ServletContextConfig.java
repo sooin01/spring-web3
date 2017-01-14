@@ -22,7 +22,7 @@ import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import com.my.app.web.common.interceptor.LoggingWebInterceptor;
+import com.my.app.web.common.interceptor.WebInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -103,8 +103,8 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
     }
 	
 	@Bean
-	public LoggingWebInterceptor loggingWebInterceptor() {
-		return new LoggingWebInterceptor();
+	public WebInterceptor loggingWebInterceptor() {
+		return new WebInterceptor();
 	}
 	
 //	@Bean

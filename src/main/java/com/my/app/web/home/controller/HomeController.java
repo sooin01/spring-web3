@@ -24,20 +24,20 @@ import com.my.app.web.home.service.HomeService;
 
 @Controller
 public class HomeController {
-	
+
 	private static final Logger log = LogManager.getLogger();
-	
+
 	@Autowired
 	private HomeService homeService;
-	
+
 	@Autowired
 	private Validator validator;
-	
+
 	@GetMapping(value = "/")
 	public String index() {
 		return "home/home";
 	}
-	
+
 	@GetMapping(value = "/home")
 	public String home(@Valid HomeReq homeReq, BindingResult bindingResult, Model model) {
 		// @Valid 사용안할 시
@@ -48,20 +48,20 @@ public class HomeController {
 				log.info("[{}] {}", fieldError.getField(), fieldError.getDefaultMessage());
 			}
 		}
-		
+
 		model.addAttribute("list", homeService.list());
-		
+
 		return "home/home";
 	}
-	
+
 	@PostMapping(value = "/home/update", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<ResultDto> homeUpdate(@RequestParam("id") String id) {
 		log.debug("id: {}", id);
-		
+
 		ResultDto resultDto = new ResultDto();
 		resultDto.setCode("0");
 		resultDto.setMessage("Success");
 		return ResponseEntity.ok(resultDto);
 	}
-	
+
 }
