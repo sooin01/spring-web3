@@ -4,15 +4,16 @@ import java.io.BufferedInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.my.app.web.file.dto.FileDto;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Service
 public class FileService {
+	
+	private static final Logger log = LoggerFactory.getLogger(FileService.class);
 
 	public void file(FileDto fileDto) {
 		log.debug("Content-Type: {}", fileDto.getFile().getContentType());

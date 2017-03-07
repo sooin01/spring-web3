@@ -10,13 +10,14 @@ import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 public class CryptoUtils {
+	
+	private static final Logger log = LoggerFactory.getLogger(CryptoUtils.class);
 
 	private static final String UTF8_KEY = "12345678abcdefgh";
 

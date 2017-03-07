@@ -22,7 +22,7 @@ public class HomeService {
 	@Transactional(readOnly = true)
 //	@Cacheable("commons")
 	public List<MemberVo> list() {
-		return commonDao.selectList("memberDao.list");
+		return commonDao.selectList("MemberDao.list");
 	}
 	
 }

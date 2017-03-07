@@ -20,6 +20,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,11 +37,10 @@ import com.my.app.web.file.dto.FileDto;
 import com.my.app.web.file.dto.FileResultDto;
 import com.my.app.web.file.service.FileService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Controller
 public class FileController {
+	
+	private static final Logger log = LoggerFactory.getLogger(FileController.class);
 	
 	@Autowired
 	private FileService fileService;
@@ -137,7 +138,10 @@ public class FileController {
 		
 		Files.deleteIfExists(path);
 		
-		return ResponseEntity.ok().body(FileResultDto.builder().fileName(newFilename).fileSize(totalRead).build());
+		FileResultDto fileResultDto = new FileResultDto();
+		fileResultDto.setFileName(newFilename);
+		fileResultDto.setFileSize(totalRead);
+		return ResponseEntity.ok().body(fileResultDto);
 	}
 	
 }

@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.ibatis.type.Alias;
 
-@Alias("member")
 public class MemberVo {
 	
 	private String memberId;
