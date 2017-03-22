@@ -26,6 +26,8 @@ public class ApiController {
 		map.put("id", "test");
 		map.put("name", "test");
 		map.put("age", 20);
+		map.put("age", 20);
+		map.put("age", 20);
 		
 		return map;
 	}
