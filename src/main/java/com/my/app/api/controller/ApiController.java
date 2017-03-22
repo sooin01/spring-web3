@@ -14,20 +14,21 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/api")
 public class ApiController {
-	
+
 	private static final Logger log = LogManager.getLogger();
 
 	@ApiOperation(value = "/index")
 	@GetMapping(value = "/index")
 	public Map<String, Object> index() {
 		log.info("Home controller!");
-		
+		log.info("Home controller!");
+
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("id", "test");
 		map.put("name", "test");
 		map.put("age", 20);
-		
+
 		return map;
 	}
-	
+
 }
