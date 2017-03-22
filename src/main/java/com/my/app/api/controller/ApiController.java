@@ -30,17 +30,4 @@ public class ApiController {
 		return map;
 	}
 	
-	@ApiOperation(value = "/index2")
-	@GetMapping(value = "/index2")
-	public Map<String, Object> index2() {
-		log.info("Home controller!");
-
-		Map<String, Object> map = new LinkedHashMap<>();
-		map.put("id", "test");
-		map.put("name", "test");
-		map.put("age", 20);
-
-		return map;
-	}
-
 }
