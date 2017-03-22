@@ -25,10 +25,6 @@ public class ApiController {
 		Map<String, Object> map = new LinkedHashMap<>();
 		map.put("id", "test");
 		map.put("name", "test");
-		map.put("name", "test");
-		map.put("age", 20);
-		map.put("age", 20);
-		map.put("age", 20);
 		map.put("age", 20);
 
 		return map;
