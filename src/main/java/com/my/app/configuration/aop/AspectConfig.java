@@ -1,4 +1,4 @@
-package com.my.app.configuration;
+package com.my.app.configuration.aop;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

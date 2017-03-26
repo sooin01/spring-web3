@@ -1,4 +1,4 @@
-package com.my.app.configuration;
+package com.my.app.configuration.jdbc;
 
 import java.util.Properties;
 

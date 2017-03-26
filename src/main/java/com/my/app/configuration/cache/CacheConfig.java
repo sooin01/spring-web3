@@ -1,4 +1,4 @@
-package com.my.app.configuration;
+package com.my.app.configuration.cache;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
