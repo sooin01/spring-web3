@@ -1,11 +1,15 @@
 package com.my.app.configuration;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -22,6 +26,10 @@ import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.my.app.web.common.interceptor.WebInterceptor;
 
 @Configuration
@@ -32,7 +40,7 @@ import com.my.app.web.common.interceptor.WebInterceptor;
 	useDefaultFilters = false
 )
 public class ServletContextConfig extends WebMvcConfigurerAdapter {
-	
+
 	@Autowired
 	private ApplicationContext applicationContext;
 
@@ -41,16 +49,16 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 		// springfox
 		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
 	    registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-	    
+
 	    // css, js, image
 	    registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
-	
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(loggingWebInterceptor());
 	}
-	
+
 	/**
 	 * JSP view resolver
 	 */
@@ -64,7 +72,7 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 		viewResolver.setCache(false);
 		return viewResolver;
 	}
-	
+
 	/**
 	 * Thymeleaf template resolver
 	 */
@@ -90,7 +98,7 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
 	    templateEngine.setEnableSpringELCompiler(true);
 	    return templateEngine;
 	}
-	
+
 	/**
 	 * Thymeleaf view resolver
 	 */
@@ -101,20 +109,37 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
         viewResolver.setTemplateEngine(templateEngine());
         return viewResolver;
     }
-	
+
 	@Bean
 	public WebInterceptor loggingWebInterceptor() {
 		return new WebInterceptor();
 	}
-	
+
 //	@Bean
 	public MultipartResolver multipartResolver() {
 	    return new CommonsMultipartResolver();
 	}
-	
+
 	@Bean
 	public Validator validator() {
 		return new LocalValidatorFactoryBean();
 	}
-	
+
+	@Override
+	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		converters.add(mappingJackson2HttpMessageConverter());
+	}
+
+	@Bean
+	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.setSerializationInclusion(Include.NON_NULL);
+		objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+		objectMapper.disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES);
+
+		MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+		mappingJackson2HttpMessageConverter.setObjectMapper(objectMapper);
+		return mappingJackson2HttpMessageConverter;
+	}
+
 }
