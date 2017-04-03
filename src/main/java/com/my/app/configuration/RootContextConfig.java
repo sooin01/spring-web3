@@ -8,6 +8,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,7 +18,7 @@ import com.my.app.configuration.jdbc.JdbcConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = { "com.my.app.api", "com.my.app.web" },
+@ComponentScan(basePackages = { "com.my.app.api", "com.my.app.web", "com.my.app.workflow" },
 	excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class),
 	scopedProxy = ScopedProxyMode.TARGET_CLASS
 )
@@ -33,6 +34,15 @@ public class RootContextConfig {
 	@Bean
 	public AspectConfig aspectConfig() {
 		return new AspectConfig();
+	}
+	
+	@Bean
+	public ThreadPoolTaskExecutor taskExecutor() {
+		ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+		taskExecutor.setCorePoolSize(10);
+		taskExecutor.setMaxPoolSize(20);
+		taskExecutor.setQueueCapacity(50);
+		return taskExecutor;
 	}
 
 }

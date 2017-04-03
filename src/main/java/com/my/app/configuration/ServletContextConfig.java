@@ -35,7 +35,7 @@ import com.my.app.web.common.interceptor.WebInterceptor;
 @Configuration
 @EnableWebMvc
 @ComponentScan(
-	basePackages = { "com.my.app.api", "com.my.app.web" },
+	basePackages = { "com.my.app.api", "com.my.app.web", "com.my.app.workflow" },
 	includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class),
 	useDefaultFilters = false
 )
