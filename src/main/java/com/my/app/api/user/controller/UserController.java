@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class UserController {
 
-	private static final Logger LOG = LogManager.getLogger();
+	private static final Logger LOG1 = LogManager.getLogger();
 
 	@ApiOperation(value = "/users")
 	@GetMapping("/users")
@@ -39,7 +39,7 @@ public class UserController {
 	@ApiOperation(value = "/user/{userId}")
 	@GetMapping("/user/{userId}")
 	public UserWrapper getUser(@PathVariable String userId) {
-		LOG.info("userId: {}", userId);
+		LOG1.info("userId: {}", userId);
 		User user = new User();
 		user.setUserId(userId);
 		user.setUserName("Tester");
