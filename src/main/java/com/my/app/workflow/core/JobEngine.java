@@ -18,7 +18,7 @@ public class JobEngine implements Runnable {
 
 	private static final Logger LOG = LogManager.getLogger();
 
-	private LinkedBlockingQueue<Job> queue = new LinkedBlockingQueue<>();
+	private LinkedBlockingQueue<FutureTask<Job>> queue = new LinkedBlockingQueue<>();
 
 	@Autowired
 	private ThreadPoolTaskExecutor taskExecutor;
@@ -28,24 +28,31 @@ public class JobEngine implements Runnable {
 		new Thread(this).start();
 	}
 
-	public void add(Job job) {
+	public FutureTask<Job> add(Job job) {
+		FutureTask<Job> task = null;
+		
 		try {
-			queue.put(job);
-		} catch (InterruptedException e) {
+			task = new FutureTask<>(job);
+			queue.put(task);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return task;
 	}
 
 	@Override
 	public void run() {
 		while (true) {
 			try {
-				LOG.info("JobEngine waiting.. {}/{}/{}/{}", taskExecutor.getCorePoolSize(), taskExecutor.getActiveCount(),
-						taskExecutor.getMaxPoolSize(), taskExecutor.getPoolSize());
-				Job job = queue.take();
-				LOG.info("JobEngine start: {}", job.getName());
-				taskExecutor.execute(new FutureTask<>(job));
-			} catch (InterruptedException e) {
+				LOG.info("JobEngine waiting.. {}/{}/{}/{}",
+						taskExecutor.getActiveCount(),
+						taskExecutor.getCorePoolSize(),
+						taskExecutor.getPoolSize(),
+						taskExecutor.getMaxPoolSize());
+				FutureTask<Job> task = queue.take();
+				taskExecutor.execute(task);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
