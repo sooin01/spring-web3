@@ -1,0 +1,25 @@
+= RESTful API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+
+
+[[overview]]
+= Overview
+RESTful API 문서
+
+
+
+[[user]]
+== 사용자
+사용자
+
+=== request
+include::{snippets}/users/http-request.adoc[]
+
+=== response
+include::{snippets}/users/http-response.adoc[]
