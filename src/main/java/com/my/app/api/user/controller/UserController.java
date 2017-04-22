@@ -8,15 +8,12 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.my.app.api.user.domain.User;
 import com.my.app.api.user.domain.UserWrapper;
-import com.my.app.job.task.DefaultTask;
-import com.my.app.plugin.job.task.PluginDefaultTask;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -24,12 +21,6 @@ import io.swagger.annotations.ApiOperation;
 public class UserController {
 
 	private static final Logger LOG2 = LogManager.getLogger();
-
-	@Autowired(required = false)
-	private DefaultTask defaultTask;
-
-	@Autowired(required = false)
-	private PluginDefaultTask pluginDefaultTask;
 
 	@ApiOperation(value = "/users")
 	@GetMapping("/users")
@@ -39,9 +30,6 @@ public class UserController {
 		user.setUserId(userId);
 		user.setUserName("Tester");
 		user.add(linkTo(methodOn(UserController.class).getUser(userId)).withSelfRel());
-
-		System.out.println("Task name: " + defaultTask.getTaskName());
-		System.out.println("Plugin Task name: " + pluginDefaultTask.getTaskName());
 
 		UserWrapper userWrapper = new UserWrapper();
 		userWrapper.setUsers(Arrays.asList(user));
