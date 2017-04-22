@@ -3,43 +3,41 @@
 
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
-			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36}.%method:%line - %msg%n" />
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{0}.%method:%line - %msg%n" />
 		</Console>
 	</Appenders>
-	
+
 	<Loggers>
 		<Logger name="com.my.app.api" level="debug" />
-		
+
 		<Logger name="com.my.app.configuration" level="debug" />
-		
+
 		<Logger name="com.my.app.web" level="debug" />
-		
+
 		<Logger name="org.springframework" level="info" />
-		
+
 		<Logger name="springfox" level="info" />
-		
+
 		<Logger name="org.apache" level="info" />
-		
+
 		<Logger name="org.mybatis" level="info" />
-		
+
 		<Logger name="com.zaxxer.hikari" level="info" />
-		
-		<Logger name="com.atomikos" level="trace" />
-		
-		<logger name="log4jdbc.log4j2" level="error" additivity="false">
-			<appender-ref ref="Console" />
-		</logger>
-		
+
+		<Logger name="com.atomikos" level="debug" />
+
+		<logger name="log4jdbc.log4j2" level="error" />
+
 		<Logger name="jdbc.sqlonly" level="off" />
 		<Logger name="jdbc.sqltiming" level="info" />
 		<Logger name="jdbc.audit" level="off" />
 		<Logger name="jdbc.resultset" level="off" />
 		<Logger name="jdbc.resultsettable" level="info" />
 		<Logger name="jdbc.connection" level="off" />
-		
+
 		<Root level="info">
 			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>
-	
+
 </Configuration>

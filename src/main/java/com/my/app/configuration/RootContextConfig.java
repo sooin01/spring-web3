@@ -14,13 +14,12 @@ import org.springframework.web.client.RestTemplate;
 import com.my.app.configuration.aop.AspectConfig;
 import com.my.app.configuration.cache.CacheConfig;
 import com.my.app.configuration.jdbc.JdbcConfig;
-import com.my.app.configuration.job.JobTaskScannerConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
 @ComponentScan(basePackages = { "com.my.app.api",
 		"com.my.app.web" }, excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class), scopedProxy = ScopedProxyMode.TARGET_CLASS)
-@Import(value = { JdbcConfig.class, CacheConfig.class, JobTaskScannerConfig.class })
+@Import(value = { JdbcConfig.class, CacheConfig.class })
 public class RootContextConfig {
 
 	@Bean

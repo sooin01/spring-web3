@@ -25,10 +25,10 @@ public class UserController {
 
 	private static final Logger LOG2 = LogManager.getLogger();
 
-	@Autowired
+	@Autowired(required = false)
 	private DefaultTask defaultTask;
 
-	@Autowired
+	@Autowired(required = false)
 	private PluginDefaultTask pluginDefaultTask;
 
 	@ApiOperation(value = "/users")
