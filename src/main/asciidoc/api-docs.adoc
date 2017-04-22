@@ -1,17 +1,9 @@
-= RESTful API Document
-:doctype: book
-:icons: font
-:source-highlighter: highlightjs
+= RESTful API Documents
 :toc: left
-:toclevels: 4
-:sectlinks:
 
 
-
-[[overview]]
 = Overview
 RESTful API 문서
-
 
 
 [[user]]
