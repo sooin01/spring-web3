@@ -8,8 +8,12 @@ import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.my.app.api.user.domain.User;
@@ -24,6 +28,7 @@ public class UserController {
 
 	@ApiOperation(value = "/users")
 	@GetMapping("/users")
+	@ResponseStatus(HttpStatus.OK)
 	public UserWrapper getUsers() {
 		String userId = UUID.randomUUID().toString();
 		User user = new User();
@@ -36,8 +41,9 @@ public class UserController {
 		return userWrapper;
 	}
 
-	@ApiOperation(value = "/user/{userId}")
-	@GetMapping("/user/{userId}")
+	@ApiOperation(value = "/users/{userId}")
+	@GetMapping("/users/{userId}")
+	@ResponseStatus(HttpStatus.OK)
 	public UserWrapper getUser(@PathVariable String userId) {
 		LOG2.info("userId: {}", userId);
 		User user = new User();
@@ -47,6 +53,12 @@ public class UserController {
 		UserWrapper userWrapper = new UserWrapper();
 		userWrapper.setUser(user);
 		return userWrapper;
+	}
+
+	@PostMapping(value = "/users")
+	@ResponseStatus(HttpStatus.CREATED)
+	public void addUser(@RequestBody UserWrapper userWrapper) {
+
 	}
 
 }

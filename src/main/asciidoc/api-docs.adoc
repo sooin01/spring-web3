@@ -7,11 +7,20 @@ RESTful API 문서
 
 
 [[user]]
-== 사용자
-사용자
+== 사용자 조회
+사용자 조회
 
 === request
-include::{snippets}/users/http-request.adoc[]
+include::{snippets}/UserControllerTest/testGetUsers/http-request.adoc[]
 
 === response
-include::{snippets}/users/http-response.adoc[]
+include::{snippets}/UserControllerTest/testGetUsers/http-response.adoc[]
+
+== 사용자 등록
+사용자 등록
+
+=== request
+include::{snippets}/UserControllerTest/testAddUsers/http-request.adoc[]
+
+=== response
+include::{snippets}/UserControllerTest/testAddUsers/http-response.adoc[]
