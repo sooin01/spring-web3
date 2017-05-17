@@ -1,4 +1,4 @@
-package com.my.app.web.common.dao;
+package com.my.app.common.dao;
 
 import java.util.List;
 
@@ -11,13 +11,13 @@ public class CommonDao {
 
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	
-	public <T> List<T> selectList(String statement) {
+
+	public <E> List<E> selectList(String statement) {
 		return sqlSession.selectList(statement);
 	}
-	
-	public <T> List<T> selectList(String statement, Object parameter) {
+
+	public <E> List<E> selectList(String statement, Object parameter) {
 		return sqlSession.selectList(statement, parameter);
 	}
-	
+
 }

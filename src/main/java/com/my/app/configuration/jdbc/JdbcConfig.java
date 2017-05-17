@@ -28,20 +28,20 @@ public class JdbcConfig {
         ds.setAutoCommit(false);
         return ds;
 	}
-	
+
 	@Bean
 	public DataSourceTransactionManager transactionManager() {
 		return new DataSourceTransactionManager(dataSource());
 	}
-	
+
 	@Bean
 	public SqlSessionFactory sqlSessionFactory() throws Exception {
 		PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver = new PathMatchingResourcePatternResolver();
 		Resource[] resources = pathMatchingResourcePatternResolver.getResources("classpath:mybatis/**/mappers/**/*.xml");
-		
+
 		Configuration configuration = new Configuration();
 		configuration.setMapUnderscoreToCamelCase(true);
-		
+
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource());
 		sqlSessionFactoryBean.setMapperLocations(resources);
@@ -49,10 +49,10 @@ public class JdbcConfig {
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.my.app.web");
 		return sqlSessionFactoryBean.getObject();
 	}
-	
+
 	@Bean
 	public SqlSessionTemplate sqlSessionTemplate() throws Exception {
 		return new SqlSessionTemplate(sqlSessionFactory());
 	}
-	
+
 }

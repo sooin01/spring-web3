@@ -17,7 +17,7 @@ import com.my.app.configuration.jdbc.JdbcConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = { "com.my.app.api",
+@ComponentScan(basePackages = { "com.my.app.common", "com.my.app.api",
 		"com.my.app.web" }, excludeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, value = Controller.class), scopedProxy = ScopedProxyMode.TARGET_CLASS)
 @Import(value = { JdbcConfig.class, CacheConfig.class })
 public class RootContextConfig {

@@ -8,16 +8,17 @@ import org.aspectj.lang.annotation.Aspect;
 
 @Aspect
 public class AspectConfig {
-	
+
 	private static final Logger log = LogManager.getLogger();
-	
+
 	@Around("execution(* com.my.app..*Service.*(..))")
-	public void serviceAround(ProceedingJoinPoint joinPoint) throws Throwable {
+	public Object serviceAround(ProceedingJoinPoint joinPoint) throws Throwable {
 		log.info("AOP serviceAround before!");
-		
-		joinPoint.proceed();
-		
+
+		Object object = joinPoint.proceed();
+
 		log.info("AOP serviceAround after!");
+		return object;
 	}
-	
+
 }

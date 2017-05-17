@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.my.app.web.common.dao.CommonDao;
+import com.my.app.common.dao.CommonDao;
 import com.my.app.web.home.vo.MemberVo;
 
 @Service

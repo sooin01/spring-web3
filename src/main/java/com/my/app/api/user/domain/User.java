@@ -8,6 +8,16 @@ public class User extends BaseDomain {
 
 	private String userName;
 
+	private String createdAt;
+
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+
 	public String getUserId() {
 		return userId;
 	}

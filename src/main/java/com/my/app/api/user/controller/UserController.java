@@ -3,11 +3,11 @@ package com.my.app.api.user.controller;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-import java.util.Arrays;
-import java.util.UUID;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.my.app.api.user.domain.User;
 import com.my.app.api.user.domain.UserWrapper;
+import com.my.app.api.user.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -26,18 +27,19 @@ public class UserController {
 
 	private static final Logger LOG2 = LogManager.getLogger();
 
+	@Autowired
+	private UserService userService;
+
 	@ApiOperation(value = "/users")
 	@GetMapping("/users")
 	@ResponseStatus(HttpStatus.OK)
 	public UserWrapper getUsers() {
-		String userId = UUID.randomUUID().toString();
-		User user = new User();
-		user.setUserId(userId);
-		user.setUserName("Tester");
-		user.add(linkTo(methodOn(UserController.class).getUser(userId)).withSelfRel());
-
+		List<User> users = userService.getUsers();
+		for (User user : users) {
+			user.add(linkTo(methodOn(UserController.class).getUser(user.getUserId())).withSelfRel());
+		}
 		UserWrapper userWrapper = new UserWrapper();
-		userWrapper.setUsers(Arrays.asList(user));
+		userWrapper.setUsers(users);
 		return userWrapper;
 	}
 
